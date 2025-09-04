@@ -1,0 +1,53 @@
+# Hướng dẫn cài đặt (Tiếng Việt)
+
+Tệp này mô tả các bước cần làm để bật chế độ debug cho CEP/Extension của Adobe (PlayerDebugMode) và cách cài extension vào máy Windows.
+
+Lưu ý: thực hiện các lệnh sau với quyền Administrator (Run as Administrator).
+
+## 1) Bật PlayerDebugMode (để load extension từ thư mục local)
+Mở PowerShell dưới quyền Administrator, rồi copy và chạy 1 trong các lệnh sau tùy phiên bản Illustrator/CEP của bạn.
+
+- Nếu CEP/CSXS là CSXS.11 (thường với Illustrator mới hơn):
+```powershell
+reg add "HKCU\Software\Adobe\CSXS.11" /v PlayerDebugMode /t REG_SZ /d 1 /f
+```
+
+- Nếu dùng Illustrator / CEP cũ (phiên bản AI < 24), dùng CSXS.10:
+```powershell
+reg add "HKCU\Software\Adobe\CSXS.10" /v PlayerDebugMode /t REG_SZ /d 1 /f
+```
+
+Bạn có thể kiểm tra giá trị vừa thêm bằng:
+```powershell
+reg query "HKCU\Software\Adobe\CSXS.11" /v PlayerDebugMode
+# hoặc nếu dùng CSXS.10
+reg query "HKCU\Software\Adobe\CSXS.10" /v PlayerDebugMode
+```
+
+## 2) Copy file extension vào thư mục cài đặt CEP
+Sau khi bật PlayerDebugMode, copy folder extension (thư mục extension chứa `manifest.xml` và các file JS/HTML...) vào đường dẫn sau:
+
+```
+C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
+```
+
+- Nếu hệ thống của bạn không có `Program Files (x86)` (hiếm gặp trên một số máy 64-bit), kiểm tra `C:\Program Files\Common Files\Adobe\CEP\extensions\`.
+- Mỗi extension nên nằm trong một thư mục con, ví dụ:
+  - C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\my-extension-folder\ (chứa manifest và các file)
+
+## 3) Khởi động lại ứng dụng Adobe
+Sau khi copy xong:
+- Đóng hoàn toàn Illustrator (hoặc ứng dụng Adobe liên quan) và mở lại.
+- Vào Window > Extensions (hoặc menu tương tự) để thấy extension.
+
+## 4) Ghi chú an toàn và khắc phục
+- Luôn chạy PowerShell với quyền Administrator khi thay đổi registry.
+- Nếu extension không hiện: kiểm tra `manifest.xml` (version, IDs), kiểm tra đường dẫn cài đặt, và đảm bảo PlayerDebugMode đã set thành `1`.
+- Để tắt PlayerDebugMode, chạy:
+```powershell
+reg add "HKCU\Software\Adobe\CSXS.11" /v PlayerDebugMode /t REG_SZ /d 0 /f
+# hoặc với CSXS.10
+reg add "HKCU\Software\Adobe\CSXS.10" /v PlayerDebugMode /t REG_SZ /d 0 /f
+```
+
+Nếu cần, mình có thể thêm hướng dẫn cụ thể hơn (ví dụ: ví dụ manifest, cấp quyền manifest, hay cách debug console của extension).

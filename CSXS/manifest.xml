@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<ExtensionManifest Version="5.0" ExtensionBundleId="LuuTruScript" ExtensionBundleName="Lưu Trữ Script" ExtensionBundleVersion="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Author><![CDATA[Script Manager Developer]]></Author>
+    <Legal><![CDATA[Bản quyền thuộc về tác giả. Sử dụng cho mục đích học tập và phát triển.]]></Legal>
+    <Contact mailto="developer@example.com"/>
+    <Abstract><![CDATA[Extension quản lý và lưu trữ các script ExtendScript cho Adobe Illustrator.
+
+Sau khi cài đặt, vào Windows -> Extensions -> Lưu Trữ Script để sử dụng.
+
+Tính năng:
+- Lưu trữ và quản lý các script .jsx
+- Chạy script bằng double-click
+- Giao diện thân thiện và dễ sử dụng
+- Tích hợp hoàn toàn với Illustrator workflow
+- Tổ chức script theo danh mục
+
+Email phản hồi: developer@example.com]]></Abstract>
+    
+    <ExtensionList>
+        <Extension Id="LuuTruScript" Version="1.0.0"/>
+    </ExtensionList>
+    
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="ILST" Version="[18.0,99.9]"/>
+        </HostList>
+        <LocaleList>
+            <Locale Code="All"/>
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="5.0"/>
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    
+    <DispatchInfoList>
+        <Extension Id="LuuTruScript">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./index.html</MainPath>
+                    <ScriptPath>./scripts/main.jsx</ScriptPath>
+                    <CEFCommandLine>
+                        <Parameter>--mixed-context</Parameter>
+                        <Parameter>--enable-nodejs</Parameter>
+                        <Parameter>--enable-file-cookies</Parameter>
+                    </CEFCommandLine>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Menu>Lưu Trữ Script</Menu>
+                    <Type>Panel</Type>
+                    <Geometry>
+                        <Size>
+                            <Width>320</Width>
+                            <Height>450</Height>
+                        </Size>
+                        <MinSize>
+                            <Width>280</Width>
+                            <Height>350</Height>
+                        </MinSize>
+                        <MaxSize>
+                            <Width>600</Width>
+                            <Height>800</Height>
+                        </MaxSize>
+                    </Geometry>
+                    <Icons>
+                        <Icon Type="Normal">./assets/icons/icon_normal.png</Icon>
+                        <Icon Type="RollOver">./assets/icons/icon_rollover.png</Icon>
+                        <Icon Type="Disabled">./assets/icons/icon_disabled.png</Icon>
+                        <Icon Type="DarkNormal">./assets/icons/icon_dark_normal.png</Icon>
+                        <Icon Type="DarkRollOver">./assets/icons/icon_dark_rollover.png</Icon>
+                    </Icons>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+    </DispatchInfoList>
+</ExtensionManifest>

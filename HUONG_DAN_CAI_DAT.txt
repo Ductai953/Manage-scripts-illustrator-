@@ -1,0 +1,141 @@
+HƯỚNG DẪN CÀI ĐẶT EXTENSION "LƯU TRỮ SCRIPT"
+===============================================
+
+## CÁCH 1: CÀI ĐẶT CHO DEVELOPMENT (DEBUG MODE)
+
+### Windows:
+1. Mở Registry Editor (Win + R → "regedit")
+2. Đi tới: HKEY_CURRENT_USER\Software\Adobe\CSXS.8
+   (Với CS6: CSXS.6, CC2014: CSXS.5, CC2015: CSXS.6, CC2017+: CSXS.7, CC2018+: CSXS.8)
+3. Tạo String Value: "PlayerDebugMode" = "1"
+4. Copy folder "LuuTruScript" vào:
+   %USERPROFILE%\AppData\Roaming\Adobe\CEP\extensions\
+5. Restart Adobe Illustrator
+6. Vào Windows → Extensions → Lưu Trữ Script
+
+### macOS:
+1. Mở Terminal
+2. Chạy lệnh: defaults write com.adobe.CSXS.8 PlayerDebugMode 1
+3. Copy folder "LuuTruScript" vào:
+   ~/Library/Application Support/Adobe/CEP/extensions/
+4. Restart Adobe Illustrator
+5. Vào Window → Extensions → Lưu Trữ Script
+
+## CÁCH 2: ĐÓNG GÓI THÀNH ZXP (PRODUCTION)
+
+### Yêu cầu:
+- ZXPSignCmd tool từ Adobe
+- Certificate (.p12) để ký extension
+
+### Các bước:
+1. Tạo certificate tự ký:
+   ZXPSignCmd -selfSignedCert VN "Luu Tru Script" "Extension Developer" "password"
+
+2. Đóng gói extension:
+   ZXPSignCmd -sign "LuuTruScript" "LuuTruScript.zxp" "certificate.p12" "password"
+
+3. Cài đặt ZXP bằng:
+   - ZXPInstaller
+   - Extension Manager CC
+   - Anastasiy's Extension Manager
+
+## KIỂM TRA CÀI ĐẶT:
+
+1. Mở Adobe Illustrator
+2. Tạo document mới
+3. Vào Windows → Extensions
+4. Tìm "Lưu Trữ Script" trong danh sách
+5. Click để mở panel
+6. Test bằng cách thêm script đầu tiên
+
+## XỬ LÝ LỖI THƯỜNG GẶP:
+
+❌ Extension không xuất hiện:
+- Kiểm tra PlayerDebugMode đã bật
+- Restart Illustrator
+- Kiểm tra đường dẫn folder
+- Đảm bảo manifest.xml không có lỗi syntax
+
+❌ Extension mở nhưng không hoạt động:
+- Mở Chrome DevTools (F12 nếu debug mode)
+- Kiểm tra Console errors
+- Đảm bảo có document đang mở
+- Kiểm tra CSInterface.js đã load đúng
+
+❌ Lỗi "Cannot save scripts":
+- Kiểm tra quyền localStorage
+- Clear browser cache của CEP
+- Restart extension
+
+❌ Scripts không chạy:
+- Kiểm tra syntax của script code
+- Đảm bảo document đang mở
+- Xem Console log để debug
+
+## HƯỚNG DẪN SỬ DỤNG NHANH:
+
+### Thêm Script Đầu Tiên:
+1. Nhập tên: "Hello World"
+2. Chọn danh mục: "Tổng quát"
+3. Nhập code: alert("Hello from Script Manager!");
+4. Click "💾 Lưu Script"
+5. Double-click script vừa tạo để chạy
+
+### Import Script Có Sẵn:
+1. Click "📥 Import Script"
+2. Chọn file .jsx
+3. Chỉnh sửa tên và danh mục nếu cần
+4. Click "💾 Lưu Script"
+
+### Keyboard Shortcuts:
+- Ctrl+Enter: Lưu script
+- F5: Test script hiện tại
+- Double-click: Chạy script từ danh sách
+
+## SAMPLE SCRIPTS ĐỂ TEST:
+
+### 1. Tạo Hình Vuông Đơn Giản:
+```javascript
+var doc = app.activeDocument;
+var rect = doc.pathItems.rectangle(0, 0, 100, 100);
+rect.filled = true;
+var color = new RGBColor();
+color.red = 255;
+color.green = 0;
+color.blue = 0;
+rect.fillColor = color;
+```
+
+### 2. Thông Tin Document:
+```javascript
+var doc = app.activeDocument;
+alert("Document: " + doc.name + 
+      "\nSize: " + doc.width + "x" + doc.height +
+      "\nObjects: " + doc.pathItems.length);
+```
+
+### 3. Tạo Text:
+```javascript
+var doc = app.activeDocument;
+var textFrame = doc.textFrames.add();
+textFrame.contents = "Hello from Script Manager!";
+textFrame.position = [100, 100];
+```
+
+## TIPS & TRICKS:
+
+✅ Đặt tên script có ý nghĩa
+✅ Sử dụng danh mục để tổ chức
+✅ Test script trước khi lưu
+✅ Export backup thường xuyên
+✅ Sử dụng comments trong code
+✅ Kiểm tra document đang mở trước khi chạy script
+
+## YÊU CẦU HỆ THỐNG:
+- Adobe Illustrator CS6+
+- Windows 7+ hoặc macOS 10.9+
+- CEP Runtime 5.0+
+- Chrome-based CEP browser
+
+## LIÊN HỆ HỖ TRỢ:
+Email: developer@example.com

@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lưu Trữ Script</title>
+    <meta http-equiv="Pragma" content="no-cache" />
+    <link rel="stylesheet" type="text/css" href="assets/css/app.css"/>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header Section - Compact -->
+        <div class="header">
+            <h2>� Lưu Trữ Script</h2>
+            <p class="subtitle">Quản lý ExtendScript</p>
+        </div>
+
+        <!-- Add Script Section - Compact -->
+        <div class="section">
+            <!-- Input Form - Horizontal Layout -->
+            <div class="input-group">
+                <label>Tên:</label>
+                <input type="text" id="scriptName" placeholder="Nhập tên script...">
+                <label>Danh mục:</label>
+                <select id="scriptCategory">
+                    <option value="general">Tổng quát</option>
+                    <option value="shapes">Hình dạng</option>
+                    <option value="colors">Màu sắc</option>
+                    <option value="text">Văn bản</option>
+                    <option value="effects">Hiệu ứng</option>
+                    <option value="automation">Tự động hóa</option>
+                    <option value="__create_new__">➕ Tạo danh mục mới...</option>
+                </select>
+            </div>
+            
+            <!-- Code Input - Compact -->
+            <div class="input-group vertical">
+                <label>Code ExtendScript:</label>
+                <textarea id="scriptCode" placeholder="// Nhập code ExtendScript tại đây...&#10;// Ví dụ: alert('Hello World!');"></textarea>
+            </div>
+            
+            <!-- Action Buttons - Horizontal -->
+            <div class="button-group">
+                <button id="saveScript" class="btn btn-primary">💾 Lưu Script</button>
+                <button id="testScript" class="btn btn-secondary">▶️ Test Ngay</button>
+                <button id="importScript" class="btn btn-secondary">📥 Import</button>
+            </div>
+        </div>
+
+        <!-- Scripts List Section - MAIN CONTENT AREA -->
+        <div class="section script-list-priority">
+            <h3>� Danh Sách Script Đã Lưu</h3>
+            <div class="filter-group">
+                <select id="categoryFilter">
+                    <option value="all">Tất cả danh mục</option>
+                    <option value="general">Tổng quát</option>
+                    <option value="shapes">Hình dạng</option>
+                    <option value="colors">Màu sắc</option>
+                    <option value="text">Văn bản</option>
+                    <option value="effects">Hiệu ứng</option>
+                    <option value="automation">Tự động hóa</option>
+                </select>
+                <button id="manageCategoriesBtn" class="btn btn-small btn-secondary" title="Quản lý danh mục">🏷️</button>
+                <button id="refreshList" class="btn btn-small btn-secondary">🔄</button>
+                <button id="exportAll" class="btn btn-small btn-secondary">📤</button>
+                <button id="clearAll" class="btn btn-small btn-warning">🗑️</button>
+            </div>
+            <div id="scriptsList" class="scripts-list">
+                <div class="empty-state">
+                    <div class="icon">📜</div>
+                    <p>Chưa có script nào được lưu.</p>
+                    <p>Hãy thêm script đầu tiên của bạn! 👆</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="status" id="status">
+            Sẵn sàng. Double-click vào script để chạy ngay!
+        </div>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="fileInput" accept=".jsx,.js" style="display: none;">
+
+    <!-- Custom Category Modal -->
+    <div id="categoryModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h4>Tạo Danh Mục Mới</h4>
+            <div class="input-group vertical">
+                <label>Tên danh mục:</label>
+                <input type="text" id="newCategoryName" placeholder="Nhập tên danh mục..." maxlength="20">
+            </div>
+            <div class="input-group vertical">
+                <label>Chọn màu:</label>
+                <div class="color-picker-group">
+                    <input type="color" id="categoryColorPicker" value="#4a90e2">
+                    <div class="color-preview" id="colorPreview"></div>
+                    <div class="preset-colors">
+                        <div class="preset-color" data-color="#4a90e2" style="background: #4a90e2;" title="Xanh dương"></div>
+                        <div class="preset-color" data-color="#50c878" style="background: #50c878;" title="Xanh lá"></div>
+                        <div class="preset-color" data-color="#ff6b6b" style="background: #ff6b6b;" title="Đỏ"></div>
+                        <div class="preset-color" data-color="#ffa500" style="background: #ffa500;" title="Cam"></div>
+                        <div class="preset-color" data-color="#9b59b6" style="background: #9b59b6;" title="Tím"></div>
+                        <div class="preset-color" data-color="#f39c12" style="background: #f39c12;" title="Vàng"></div>
+                        <div class="preset-color" data-color="#e91e63" style="background: #e91e63;" title="Hồng"></div>
+                        <div class="preset-color" data-color="#1abc9c" style="background: #1abc9c;" title="Xanh ngọc"></div>
+                        <div class="preset-color" data-color="#607d8b" style="background: #607d8b;" title="Xám xanh"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="confirmCategory" class="btn btn-primary">✅ Tạo</button>
+                <button id="cancelCategory" class="btn btn-secondary">❌ Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Categories Modal -->
+    <div id="manageCategoriesModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h4>Quản Lý Danh Mục</h4>
+            <div class="category-section">
+                <h5>Danh mục mặc định</h5>
+                <div class="default-categories">
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #4a90e2;"></span>
+                        <span class="category-name">Tổng quát</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #50c878;"></span>
+                        <span class="category-name">Hình dạng</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #ff6b6b;"></span>
+                        <span class="category-name">Màu sắc</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #ffa500;"></span>
+                        <span class="category-name">Văn bản</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #9b59b6;"></span>
+                        <span class="category-name">Hiệu ứng</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                    <div class="category-item readonly">
+                        <span class="category-color" style="background: #1abc9c;"></span>
+                        <span class="category-name">Tự động hóa</span>
+                        <span class="category-type">Mặc định</span>
+                    </div>
+                </div>
+                
+                <h5>Danh mục tùy chỉnh</h5>
+                <div id="customCategoriesList" class="custom-categories">
+                    <!-- Custom categories will be populated here -->
+                </div>
+                
+                <button id="addNewCategoryFromManage" class="btn btn-primary add-category-btn">
+                    ➕ Tạo danh mục mới
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button id="closeManageCategories" class="btn btn-secondary">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Color Modal -->
+    <div id="editColorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h4>Đổi Màu Danh Mục</h4>
+            <div class="edit-color-info">
+                <span class="current-category-name" id="editingCategoryName"></span>
+            </div>
+            <div class="input-group vertical">
+                <label>Chọn màu mới:</label>
+                <div class="color-picker-group">
+                    <input type="color" id="editCategoryColorPicker" value="#4a90e2">
+                    <div class="color-preview" id="editColorPreview"></div>
+                    <div class="preset-colors">
+                        <div class="preset-color edit-preset" data-color="#4a90e2" style="background: #4a90e2;" title="Xanh dương"></div>
+                        <div class="preset-color edit-preset" data-color="#50c878" style="background: #50c878;" title="Xanh lá"></div>
+                        <div class="preset-color edit-preset" data-color="#ff6b6b" style="background: #ff6b6b;" title="Đỏ"></div>
+                        <div class="preset-color edit-preset" data-color="#ffa500" style="background: #ffa500;" title="Cam"></div>
+                        <div class="preset-color edit-preset" data-color="#9b59b6" style="background: #9b59b6;" title="Tím"></div>
+                        <div class="preset-color edit-preset" data-color="#f39c12" style="background: #f39c12;" title="Vàng"></div>
+                        <div class="preset-color edit-preset" data-color="#e91e63" style="background: #e91e63;" title="Hồng"></div>
+                        <div class="preset-color edit-preset" data-color="#1abc9c" style="background: #1abc9c;" title="Xanh ngọc"></div>
+                        <div class="preset-color edit-preset" data-color="#607d8b" style="background: #607d8b;" title="Xám xanh"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="confirmEditColor" class="btn btn-primary">✅ Cập nhật</button>
+                <button id="cancelEditColor" class="btn btn-secondary">❌ Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h4>Xác nhận xóa</h4>
+            <p>Bạn có chắc muốn xóa danh mục "<span id="deleteCategoryName"></span>"?</p>
+            <p class="warning-text">⚠️ Tất cả script trong danh mục này sẽ được chuyển về "Tổng quát"</p>
+            <div class="modal-buttons">
+                <button id="confirmDelete" class="btn btn-danger">🗑️ Xóa</button>
+                <button id="cancelDelete" class="btn btn-secondary">❌ Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/CSInterface.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
